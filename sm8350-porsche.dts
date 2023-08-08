@@ -1,0 +1,85 @@
+/dts-v1/;
+
+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+#include "sm8350.dtsi"
+#include "pm8350.dtsi"
+#include "pm8350b.dtsi"
+#include "pm8350c.dtsi"
+#include "pmk8350.dtsi"
+#include "pmr735a.dtsi"
+#include "pmr735b.dtsi"
+
+/ {
+        //model = "Qualcomm Technologies, Inc. lahaina v1 SoC";
+        model = "Qualcomm Technologies, Inc. Lahaina v2.1 SoC";
+        compatible = "qcom,sm8350", "qcom,lahaina";
+        //qcom,msm-id = <415 0x10000>, <456 0x10000>, <501 0x10000>;
+        qcom,msm-id = <415 0x20001>, <456 0x20001>;
+        qcom,board-id = <0 0>;
+	interrupt-parent = <&intc>;
+
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+        chassis-type = "handset";
+
+        aliases {
+                display0 = &framebuffer0;
+        };
+
+        chosen {
+                #address-cells = <2>;
+                #size-cells = <2>;
+                ranges;
+                stdout-path = "display0";
+
+                framebuffer0: framebuffer@e1000000 {
+                        compatible = "simple-framebuffer";
+                        reg = <0x0 0xe1000000 0x0 0x02300000>;
+                        width = <1080>;
+                        height = <2400>;
+                        stride = <(1080 * 4)>;
+                        format = "a8r8g8b8";
+                        status = "okay";
+                };
+        };
+
+        reserved_memory: reserved-memory {
+                #address-cells = <2>;
+                #size-cells = <2>;
+                ranges;
+
+                splash_memory:splash_region {
+                        reg = <0x0 0xe1000000 0x0 0x02300000>;
+                        no-map;
+                        label = "cont_splash_region";
+                };
+
+                framebuffer_region@e1000000 {
+                        reg = <0x0 0xe1000000 0x0 0x02300000>;
+                        no-map;
+                };
+
+                reserved-memory@80860000 {
+                        compatible = "qcom,cmd-db";
+                        no-map;
+                        reg = <0x0 0x80860000 0x0 0x20000>;
+                };
+
+                kboot_uboot_logmem@9fe00000 {
+                        reg = <0x0 0x9fe00000 0x0 0x200000>;
+                        xbluefi-offset = <0x1f7000>;
+                        no-map;
+                };
+
+                ramoops@e9700000 {
+                        compatible = "ramoops";
+                        reg = <0x00 0xe9700000 0x00 0x5b8000>;
+                        record-size = <0x40000>; //256k
+                        console-size = <0x40000>; //256k
+                        ftrace-size = <0x200000>; //2M
+                        pmsg-size = <0x200000>; //2M
+                };
+        };
+};
