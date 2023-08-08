@@ -1,0 +1,18 @@
+#!drivers/gpu/drm/panel/Kconfig
+
+config DRM_PANEL_SAMSUNG_AMS662ZS01
+        tristate "Samsung ams662zs01 intial support for realme GT2 display panels"
+        depends on OF
+        depends on DRM_MIPI_DSI
+        depends on BACKLIGHT_CLASS_DEVICE
+        select VIDEOMODE_HELPERS
+
+config DRM_PANEL_SAMSUNG_AMS662ZS01
+        tristate "Samsung ams662zs01 DSC,CMD mode panels"
+        depends on OF
+        depends on DRM_MIPI_DSI
+        depends on BACKLIGHT_CLASS_DEVICE
+        select VIDEOMODE_HELPERS
+        select DRM_MIPI_DBI
+        select DRM_DISPLAY_DP_HELPER
+        select DRM_DISPLAY_HELPER
